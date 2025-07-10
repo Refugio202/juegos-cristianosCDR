@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos Bíblicos - Iglesia Ciudad De Refugio</title>
+    <style>
+        /* Variables de colores y estilos */
+        :root {
+            --azul-principal: #1a3a6c;
+            --azul-secundario: #2c5282;
+            --naranja-opaco: rgba(230, 145, 56, 0.85);
+            --blanco: #ffffff;
+            --dorado: #d4af37;
+            --gris-claro: #f5f5f5;
+            --textura-fondo: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a3a6c"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="%232c5282" stroke-width="1" opacity="0.3"/></svg>');
+            --textura-panel: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c5282"/><circle cx="20" cy="20" r="5" fill="%231a3a6c" opacity="0.3"/><circle cx="50" cy="50" r="7" fill="%231a3a6c" opacity="0.3"/><circle cx="80" cy="80" r="6" fill="%231a3a6c" opacity="0.3"/></svg>');
+        }
+
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--azul-principal);
+            background-image: var(--textura-fondo);
+            color: var(--blanco);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Cabecera */
+        header {
+            background-color: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-bottom: 3px solid var(--naranja-opaco);
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--naranja-opaco), var(--dorado));
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-text span {
+            color: var(--naranja-opaco);
+        }
+
+        /* Menú de navegación */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--blanco);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--naranja-opaco);
+            box-shadow: 0 0 10px rgba(230, 145, 56, 0.5);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--naranja-opaco), var(--dorado));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--azul-principal);
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        /* Panel lateral */
+        .sidebar {
+            width: 300px;
+            background-color: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h2 {
+            color: var(--naranja-opaco);
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--naranja-opaco);
+            text-align: center;
+        }
+
+        .user-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .user-card .avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            font-size: 2rem;
+        }
+
+        .user-card h3 {
+            margin: 10px 0;
+            font-size: 1.4rem;
+        }
+
+        .user-card p {
+            color: #ccc;
+        }
+
+        /* Ranking */
+        .ranking {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .ranking-item:hover {
+            transform: translateX(5px);
+            background: rgba(230, 145, 56, 0.2);
+        }
+
+        .rank-position {
+            width: 30px;
+            height: 30px;
+            background: var(--naranja-opaco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .rank-1 .rank-position {
+            background: linear-gradient(135deg, var(--dorado), #ffd700);
+            box-shadow: 0 0 10px var(--dorado);
+        }
+
+        .rank-2 .rank-position {
+            background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+        }
+
+        .rank-3 .rank-position {
+            background: linear-gradient(135deg, #cd7f32, #a56a2b);
+        }
+
+        /* Área de juegos */
+        .games-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--naranja-opaco);
+        }
+
+        .game-image {
+            height: 150px;
+            background: linear-gradient(135deg, var(--azul-principal), var(--naranja-opaco));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--blanco);
+        }
+
+        .game-info {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--naranja-opaco);
+        }
+
+        .game-desc {
+            font-size: 0.9rem;
+            color: #ccc;
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--naranja-opaco), var(--dorado));
+            color: var(--azul-principal);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(230, 145, 56, 0.5);
+        }
+
+        /* Juego principal - Super Jesús Bros */
+        .featured-game {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            background: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-header {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 2px solid var(--naranja-opaco);
+        }
+
+        .game-content {
+            display: flex;
+            padding: 1.5rem;
+            gap: 2rem;
+        }
+
+        .game-screen {
+            flex: 1;
+            height: 400px;
+            background: linear-gradient(135deg, #1a3a6c, #0d1b2a);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 3px solid var(--naranja-opaco);
+            box-shadow: 0 0 20px rgba(230, 145, 56, 0.3);
+        }
+
+        .game-character {
+            position: absolute;
+            bottom: 50px;
+            left: 100px;
+            width: 50px;
+            height: 80px;
+            background: linear-gradient(to bottom, #fff, #d4d4d4);
+            border-radius: 40% 40% 10px 10px;
+            z-index: 10;
+        }
+
+        .game-character::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(to bottom, #ffd700, #d4af37);
+            border-radius: 50%;
+        }
+
+        .game-platform {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to bottom, #8b4513, #5d2906);
+        }
+
+        .game-enemy {
+            position: absolute;
+            bottom: 50px;
+            right: 200px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff0000, #8b0000);
+            border-radius: 50%;
+        }
+
+        .game-item {
+            position: absolute;
+            top: 100px;
+            right: 300px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #4caf50;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .game-details {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .game-stats {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--naranja-opaco);
+            color: var(--blanco);
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--naranja-opaco);
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 3px solid var(--naranja-opaco);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-form {
+            background: var(--azul-secundario);
+            background-image: var(--textura-panel);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--naranja-opaco);
+        }
+
+        .login-form h2 {
+            color: var(--naranja-opaco);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--blanco);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--naranja-opaco);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--naranja-opaco), var(--dorado));
+            color: var(--azul-principal);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--blanco);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animaciones */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .game-content {
+                flex-direction: column;
+            }
+            
+            .game-details {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">✝</div>
+            <div class="logo-text">Juegos <span>Bíblicos</span></div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Inicio</a></li>
+                <li><a href="#">Juegos</a></li>
+                <li><a href="#">Ranking</a></li>
+                <li><a href="#">Eventos</a></li>
+                <li><a href="#">Recursos</a></li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="avatar">JD</div>
+            <div>Juan Discípulo</div>
+        </div>
+    </header>
+    
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <h2>Tu Perfil</h2>
+            
+            <div class="user-card">
+                <div class="avatar">JD</div>
+                <h3>Juan Discípulo</h3>
+                <p>Nivel: Apóstol</p>
+                <p>Puntos: 8,450</p>
+            </div>
+            
+            <h2>Ranking Global</h2>
+            
+            <div class="ranking">
+                <div class="ranking-item rank-1">
+                    <div class="rank-position">1</div>
+                    <div>
+                        <strong>María Magdalena</strong>
+                        <p>12,300 puntos</p>
+                    </div>
+                </div>
+                
+                <div class="ranking-item rank-2">
+                    <div class="rank-position">2</div>
+                    <div>
+                        <strong>Pedro Apóstol</strong>
+                        <p>10,850 puntos</p>
+                    </div>
+                </div>
+                
+                <div class="ranking-item rank-3">
+                    <div class="rank-position">3</div>
+                    <div>
+                        <strong>Pablo de Tarso</strong>
+                        <p>9,720 puntos</p>
+                    </div>
+                </div>
+                
+                <div class="ranking-item">
+                    <div class="rank-position">4</div>
+                    <div>
+                        <strong>Lucas Evangelista</strong>
+                        <p>8,910 puntos</p>
+                    </div>
+                </div>
+                
+                <div class="ranking-item">
+                    <div class="rank-position">5</div>
+                    <div>
+                        <strong>Juan Discípulo</strong>
+                        <p>8,450 puntos</p>
+                    </div>
+                </div>
+                
+                <div class="ranking-item">
+                    <div class="rank-position">6</div>
+                    <div>
+                        <strong>Mateo Apóstol</strong>
+                        <p>7,980 puntos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Área de juegos -->
+        <div class="games-container">
+            <!-- Juego destacado -->
+            <div class="featured-game">
+                <div class="game-header">
+                    <h2>Super Jesús Bros ✝</h2>
+                    <p>Ayuda a Jesús a recolectar versículos y enfrenta al diablo en este emocionante juego de plataformas</p>
+                </div>
+                
+                <div class="game-content">
+                    <div class="game-screen">
+                        <div class="game-character"></div>
+                        <div class="game-platform"></div>
+                        <div class="game-enemy"></div>
+                        <div class="game-item"></div>
+                    </div>
+                    
+                    <div class="game-details">
+                        <div class="game-stats">
+                            <h3>Tu Progreso</h3>
+                            <p>Nivel actual: 3</p>
+                            <p>Versículos recolectados: 15/20</p>
+                            <p>Enemigos derrotados: 8</p>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <h3>Controles</h3>
+                            <div class="controls">
+                                <div class="control-btn">←</div>
+                                <div class="control-btn">↑</div>
+                                <div class="control-btn">→</div>
+                                <div class="control-btn">A</div>
+                                <div class="control-btn">↓</div>
+                                <div class="control-btn">B</div>
+                            </div>
+                        </div>
+                        
+                        <button class="play-btn pulse">JUGAR AHORA</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lista de juegos -->
+            <div class="game-card">
+                <div class="game-image">❓</div>
+                <div class="game-info">
+                    <h3 class="game-title">Quiz Bíblico</h3>
+                    <p class="game-desc">Demuestra tu conocimiento con preguntas sobre la Biblia</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.5</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🕊️</div>
+                <div class="game-info">
+                    <h3 class="game-title">El Arca de Noé</h3>
+                    <p class="game-desc">Empareja animales para subirlos al arca antes del diluvio</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.2</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🎯</div>
+                <div class="game-info">
+                    <h3 class="game-title">David y Goliat</h3>
+                    <p class="game-desc">Usa tu honda para derrotar al gigante Goliat</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Difícil</span>
+                        <span>⭐ 4.8</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🧩</div>
+                <div class="game-info">
+                    <h3 class="game-title">Parábolas de Jesús</h3>
+                    <p class="game-desc">Completa las parábolas ordenando los fragmentos</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.3</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🔍</div>
+                <div class="game-info">
+                    <h3 class="game-title">Sopa de Letras Bíblica</h3>
+                    <p class="game-desc">Encuentra nombres, lugares y conceptos bíblicos</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.0</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">📜</div>
+                <div class="game-info">
+                    <h3 class="game-title">Los Diez Mandamientos</h3>
+                    <p class="game-desc">Ordena los mandamientos según fueron entregados</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.1</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🐟</div>
+                <div class="game-info">
+                    <h3 class="game-title">Jonás y el Gran Pez</h3>
+                    <p class="game-desc">Guía a Jonás para escapar del gran pez</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Difícil</span>
+                        <span>⭐ 4.6</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🧭</div>
+                <div class="game-info">
+                    <h3 class="game-title">Éxodo: Camino a Canaán</h3>
+                    <p class="game-desc">Guía al pueblo de Israel por el desierto evitando peligros</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Alta</span>
+                        <span>⭐ 4.7</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🛡️</div>
+                <div class="game-info">
+                    <h3 class="game-title">La Armadura de Dios</h3>
+                    <p class="game-desc">Combate las tentaciones con la armadura espiritual</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.4</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🧠</div>
+                <div class="game-info">
+                    <h3 class="game-title">Memoria de Personajes</h3>
+                    <p class="game-desc">Encuentra las parejas de personajes bíblicos</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.3</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">⚔️</div>
+                <div class="game-info">
+                    <h3 class="game-title">Sansón: Fuerza Divina</h3>
+                    <p class="game-desc">Usa la fuerza de Sansón para derrotar a los filisteos</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.5</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🌊</div>
+                <div class="game-info">
+                    <h3 class="game-title">Moisés y el Mar Rojo</h3>
+                    <p class="game-desc">Abre el mar Rojo para que el pueblo pueda pasar</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.1</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🏰</div>
+                <div class="game-info">
+                    <h3 class="game-title">Las Murallas de Jericó</h3>
+                    <p class="game-desc">Derriba las murallas con el poder de la fe</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Difícil</span>
+                        <span>⭐ 4.6</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🎲</div>
+                <div class="game-info">
+                    <h3 class="game-title">Los Jueces de Israel</h3>
+                    <p class="game-desc">Aventura estratégica para liberar a Israel</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Alta</span>
+                        <span>⭐ 4.7</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🌿</div>
+                <div class="game-info">
+                    <h3 class="game-title">El Jardín del Edén</h3>
+                    <p class="game-desc">Explora el jardín y aprende sobre la creación</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.0</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🔥</div>
+                <div class="game-info">
+                    <h3 class="game-title">El Fuego de Elías</h3>
+                    <p class="game-desc">Demuestra tu fe para hacer descender fuego del cielo</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.4</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🐪</div>
+                <div class="game-info">
+                    <h3 class="game-title">Ruta de Abraham</h3>
+                    <p class="game-desc">Sigue la ruta de Abraham hacia la tierra prometida</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Media</span>
+                        <span>⭐ 4.3</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">💧</div>
+                <div class="game-info">
+                    <h3 class="game-title">Milagros de Jesús</h3>
+                    <p class="game-desc">Ayuda a Jesús a realizar sus milagros</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.2</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">🕰️</div>
+                <div class="game-info">
+                    <h3 class="game-title">Profecías Cumplidas</h3>
+                    <p class="game-desc">Relaciona las profecías con su cumplimiento</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Difícil</span>
+                        <span>⭐ 4.5</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-image">📖</div>
+                <div class="game-info">
+                    <h3 class="game-title">Versículo del Día</h3>
+                    <p class="game-desc">Memoriza y aplica el versículo diario</p>
+                    <div class="game-meta">
+                        <span>Dificultad: Fácil</span>
+                        <span>⭐ 4.8</span>
+                    </div>
+                    <button class="play-btn">Jugar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        <p>© 2025 Portal de Juegos Bíblicos - Iglesia Ciudad de Refugio | Todos los derechos reservados</p>
+        <p>Desarrollado con amor para fortalecer la fe y el conocimiento bíblico</p>
+    </footer>
+    
+    <!-- Modal de Login -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-form">
+            <h2>Iniciar Sesión</h2>
+            <div class="form-group">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" placeholder="Ingresa tu usuario">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="Ingresa tu contraseña">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary">Registrarse</button>
+                <button class="btn btn-primary">Ingresar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulación de datos en tiempo real
+        function updateRankings() {
+            const rankings = document.querySelectorAll('.ranking-item:not(.rank-1):not(.rank-2):not(.rank-3)');
+            rankings.forEach((item, index) => {
+                const points = item.querySelector('p');
+                const currentPoints = parseInt(points.textContent.replace(/\D/g, ''));
+                const newPoints = currentPoints + Math.floor(Math.random() * 20);
+                points.textContent = newPoints.toLocaleString() + ' puntos';
+            });
+            
+            // Actualizar cada 10 segundos
+            setTimeout(updateRankings, 10000);
+        }
+        
+        // Animaciones para las tarjetas de juego
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Simulación del juego principal
+        const gameCharacter = document.querySelector('.game-character');
+        let position = 100;
+        
+        function moveCharacter() {
+            position += 2;
+            if (position > 700) position = 100;
+            gameCharacter.style.left = position + 'px';
+            
+            requestAnimationFrame(moveCharacter);
+        }
+        
+        // Iniciar animaciones
+        document.addEventListener('DOMContentLoaded', () => {
+            updateRankings();
+            moveCharacter();
+        });
+    </script>
+</body>
+</html>
