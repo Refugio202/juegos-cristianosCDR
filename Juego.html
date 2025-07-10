@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Juegos Cristianos - Ciudad de Refugio</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f3f3f3;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  header {
+    background: #4caf50;
+    color: white;
+    padding: 1em;
+  }
+  main {
+    max-width: 900px;
+    margin: 1em auto;
+    background: white;
+    border-radius: 10px;
+    padding: 1em 2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  button {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 0.7em 1.5em;
+    border-radius: 5px;
+    margin: 0.5em;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  button:hover {
+    background: #45a049;
+  }
+  input[type="text"] {
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 70%;
+    max-width: 300px;
+  }
+  nav {
+    margin-bottom: 1em;
+  }
+  nav button {
+    margin: 0.3em;
+  }
+  .hidden {
+    display: none;
+  }
+  table {
+    margin: auto;
+    border-collapse: collapse;
+    width: 80%;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.8em;
+  }
+  th {
+    background-color: #4caf50;
+    color: white;
+  }
+  #memorama-board {
+    display: grid;
+    grid-template-columns: repeat(4, 70px);
+    grid-gap: 10px;
+    justify-content: center;
+    margin: 1em auto;
+  }
+  .card {
+    width: 70px;
+    height: 70px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .card.flipped, .card.matched {
+    background-color: #81c784;
+    cursor: default;
+  }
+  #sopa-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 35px);
+    grid-gap: 5px;
+    justify-content: center;
+    margin: 1em auto;
+    user-select: none;
+  }
+  #sopa-grid div {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #4caf50;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  #sopa-words {
+    margin-top: 1em;
+  }
+  #mensaje {
+    font-weight: bold;
+    margin-top: 1em;
+  }
+</style>
+</head>
+<body>
+<header><h1>Juegos Cristianos - Ciudad de Refugio</h1></header>
+<main>
+  <section id="login-section">
+    <h2>Bienvenido</h2>
+    <p>Por favor, ingresa tu nombre para comenzar a jugar:</p>
+    <input type="text" id="username-input" placeholder="Tu nombre" />
+    <br />
+    <button id="btn-login">Entrar</button>
+  </section>
+
+  <section id="menu-section" class="hidden">
+    <h2>Hola, <span id="user-name"></span></h2>
+    <p>Puntaje total: <span id="user-score">0</span></p>
+    <nav>
+      <button data-game="trivia">Trivia Bíblica</button>
+      <button data-game="memorama">Memorama</button>
+      <button data-game="sopa">Sopa de Letras</button>
+      <button data-game="versiculo">Adivina el Versículo</button>
+      <button data-game="camino">Elige el Camino</button>
+      <button id="btn-ranking">Ver Ranking</button>
+      <button id="btn-logout" style="background:#e53935;">Cerrar Sesión</button>
+    </nav>
+  </section>
+
+  <!-- Trivia Bíblica -->
+  <section id="trivia-section" class="hidden">
+    <h2>Trivia Bíblica</h2>
+    <p id="trivia-pregunta"></p>
+    <div id="trivia-opciones"></div>
+    <button id="trivia-next" class="hidden">Siguiente pregunta</button>
+    <button id="trivia-exit">Volver al menú</button>
+    <p id="mensaje"></p>
+  </section>
+
+  <!-- Memorama -->
+  <section id="memorama-section" class="hidden">
+    <h2>Memorama Bíblico</h2>
+    <div id="memorama-board"></div>
+    <p id="mensaje"></p>
+    <button id="memorama-exit">Volver al menú</button>
+  </section>
+
+  <!-- Sopa de Letras -->
+  <section id="sopa-section" class="hidden">
+    <h2>Sopa de Letras Bíblica</h2>
+    <div id="sopa-grid"></div>
+    <div id="sopa-words"></div>
+    <p id="mensaje"></p>
+    <button id="sopa-exit">Volver al menú</button>
+  </section>
+
+  <!-- Adivina el Versículo -->
+  <section id="versiculo-section" class="hidden">
+    <h2>Adivina el Versículo</h2>
+    <p id="versiculo-texto"></p>
+    <div id="versiculo-opciones"></div>
+    <button id="versiculo-exit">Volver al menú</button>
+    <p id="mensaje"></p>
+  </section>
+
+  <!-- Elige el Camino -->
+  <section id="camino-section" class="hidden">
+    <h2>Elige el Camino Correcto</h2>
+    <p>Vas por dos caminos: uno ancho y fácil, otro angosto y difícil. ¿Cuál eliges?</p>
+    <button data-choice="ancho">Camino ancho</button>
+    <button data-choice="angosto">Camino angosto</button>
+    <button id="camino-exit">Volver al menú</button>
+    <p id="mensaje"></p>
+  </section>
+
+  <!-- Ranking -->
+  <section id="ranking-section" class="hidden">
+    <h2>Ranking de Jugadores</h2>
+    <table>
+      <thead>
+        <tr><th>Nombre</th><th>Puntaje</th></tr>
+      </thead>
+      <tbody id="ranking-list"></tbody>
+    </table>
+    <button id="ranking-exit">Volver al menú</button>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  const loginSection = document.getElementById('login-section');
+  const menuSection = document.getElementById('menu-section');
+  const userNameSpan = document.getElementById('user-name');
+  const userScoreSpan = document.getElementById('user-score');
+  const messageP = document.getElementById('mensaje');
+
+  let currentUser = null;
+
+  // Guarda usuarios y puntajes en localStorage
+  // Estructura:
+  // users = { nombre1: {score: 10}, nombre2: {score: 5}, ... }
+
+  function loadUsers() {
+    return JSON.parse(localStorage.getItem('users') || '{}');
+  }
+  function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+  function getUserScore(name) {
+    const users = loadUsers();
+    return users[name]?.score || 0;
+  }
+  function updateUserScore(name, points) {
+    const users = loadUsers();
+    if (!users[name]) users[name] = {score: 0};
+    users[name].score += points;
+    saveUsers(users);
+  }
+  function getRanking() {
+    const users = loadUsers();
+    return Object.entries(users)
+      .map(([name, obj]) => ({name, score: obj.score}))
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 10);
+  }
+
+  // --- Login ---
+  const btnLogin = document.getElementById('btn-login');
+  const usernameInput = document.getElementById('username-input');
+
+  btnLogin.onclick = () => {
+    const name = usernameInput.value.trim();
+    if (name.length < 2) {
+      alert('Por favor ingresa un nombre válido');
+      return;
+    }
+    currentUser = name;
+    if (!loadUsers()[currentUser]) {
+      const users = loadUsers();
+      users[currentUser] = {score:0};
+      saveUsers(users);
+    }
+    loginSection.classList.add('hidden');
+    menuSection.classList.remove('hidden');
+    userNameSpan.textContent = currentUser;
+    userScoreSpan.textContent = getUserScore(currentUser);
+    messageP.textContent = '';
+  };
+
+  // --- Logout ---
+  document.getElementById('btn-logout').onclick = () => {
+    currentUser = null;
+    loginSection.classList.remove('hidden');
+    menuSection.classList.add('hidden');
+    messageP.textContent = '';
+    usernameInput.value = '';
+  };
+
+  // --- Navegación juegos ---
+  const navButtons = menuSection.querySelectorAll('button[data-game]');
+  navButtons.forEach(btn => {
+    btn.onclick = () => {
+      messageP.textContent = '';
+      menuSection.classList.add('hidden');
+      showGame(btn.dataset.game);
+    };
+  });
+
+  // --- Volver al menú ---
+  document.getElementById('trivia-exit').onclick =
+  document.getElementById('memorama-exit').onclick =
+  document.getElementById('sopa-exit').onclick =
+  document.getElementById('versiculo-exit').onclick =
+  document.getElementById('camino-exit').onclick =
+  document.getElementById('ranking-exit').onclick = () => {
+    hideAllSections();
+    menuSection.classList.remove('hidden');
+    userScoreSpan.textContent = getUserScore(currentUser);
+    messageP.textContent = '';
+  };
+
+  // --- Ranking ---
+  document.getElementById('btn-ranking').onclick = () => {
+    menuSection.classList.add('hidden');
+    showRanking();
+  };
+
+  function hideAllSections() {
+    ['trivia-section', 'memorama-section', 'sopa-section', 'versiculo-section', 'camino-section', 'ranking-section']
+    .forEach(id => document.getElementById(id).classList.add('hidden'));
+  }
+
+  // ========== TRIVIA BÍBLICA ==========
+  const triviaData = [
+    {
+      pregunta: "¿Quién construyó el arca?",
+      opciones: ["Moisés", "Noé", "Abraham", "David"],
+      correcta: "Noé",
+      puntaje: 5
+    },
+    {
+      pregunta: "¿Cuántos días estuvo Jesús en el desierto?",
+      opciones: ["30", "40", "50", "60"],
+      correcta: "40",
+      puntaje: 7
+    },
+    {
+      pregunta: "¿Cuál es el primer libro de la Biblia?",
+      opciones: ["Génesis", "Éxodo", "Levítico", "Números"],
+      correcta: "Génesis",
+      puntaje: 6
+    }
+  ];
+  let triviaIndex = 0;
+
+  const triviaPreguntaP = document.getElementById('trivia-pregunta');
+  const triviaOpcionesDiv = document.getElementById('trivia-opciones');
+  const triviaNextBtn = document.getElementById('trivia-next');
+
+  function showGame(gameName) {
+    hideAllSections();
+    switch(gameName) {
+      case 'trivia': startTrivia(); break;
+      case 'memorama': startMemorama(); break;
+      case 'sopa': startSopa(); break;
+      case 'versiculo': startVersiculo(); break;
+      case 'camino': startCamino(); break;
+    }
+  }
+
+  function startTrivia() {
+    triviaIndex = 0;
+    triviaNextBtn.classList.add('hidden');
+    loadTriviaQuestion();
+    document.getElementById('trivia-section').classList.remove('hidden');
+    messageP.textContent = '';
+  }
+
+  function loadTriviaQuestion() {
+    const q = triviaData[triviaIndex];
+    triviaPreguntaP.textContent = q.pregunta;
+    triviaOpcionesDiv.innerHTML = '';
+    q.opciones.forEach(op => {
+      const btn = document.createElement('button');
+      btn.textContent = op;
+      btn.onclick = () => {
+        if (op === q.correcta) {
+          messageP.textContent = '¡Correcto! +' + q.puntaje + ' puntos';
+          updateUserScore(currentUser, q.puntaje);
+        } else {
+          messageP.textContent = 'Incorrecto. La respuesta correcta es: ' + q.correcta;
+        }
+        triviaNextBtn.classList.remove('hidden');
+        Array.from(triviaOpcionesDiv.children).forEach(b => b.disabled = true);
+      };
+      triviaOpcionesDiv.appendChild(btn);
+    });
+  }
+
+  triviaNextBtn.onclick = () => {
+    triviaIndex++;
+    if (triviaIndex >= triviaData.length) {
+      messageP.textContent = 'Terminaste la trivia.';
+      triviaNextBtn.classList.add('hidden');
+    } else {
+      loadTriviaQuestion();
+      messageP.textContent = '';
+      triviaNextBtn.classList.add('hidden');
+    }
+  };
+
+  // ========== MEMORAMA ==========
+  const memoramaBoard = document.getElementById('memorama-board');
+  const memoramaSection = document.getElementById('memorama-section');
+  let memoramaCards = [];
+  let flippedCards = [];
+  let matchedCount = 0;
+
+  function startMemorama() {
+    memoramaCards = [];
+    flippedCards = [];
+    matchedCount = 0;
+    memoramaBoard.innerHTML = '';
+    const pairs = [
+      '🐟', '🐠', '🌈', '🕊️',
+      '⛪', '📖', '✝️', '🙏'
+    ];
+    memoramaCards = pairs.concat(pairs);
+    shuffleArray(memoramaCards);
+    memoramaCards.forEach((icon, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.icon = icon;
+      card.dataset.index = i;
+      card.textContent = '';
+      card.onclick = () => flipCard(card);
+      memoramaBoard.appendChild(card);
+    });
+    memoramaSection.classList.remove('hidden');
+    messageP.textContent = '';
+  }
+
+  function flipCard(card) {
+    if (flippedCards.length >= 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    card.classList.add('flipped');
+    card.textContent = card.dataset.icon;
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+      if (flippedCards[0].dataset.icon === flippedCards[1].dataset.icon) {
+        flippedCards.forEach(c => {
+          c.classList.add('matched');
+          c.classList.remove('flipped');
+        });
+        matchedCount += 1;
+        updateUserScore(currentUser, 2); // 2 puntos por pareja
+        messageP.textContent = '¡Pareja encontrada! +2 puntos';
+        flippedCards = [];
+        if (matchedCount === memoramaCards.length / 2) {
+          messageP.textContent = '¡Ganaste el memorama! Puntos totales actualizados.';
+        }
+      } else {
+        setTimeout(() => {
+          flippedCards.forEach(c => {
+            c.classList.remove('flipped');
+            c.textContent = '';
+          });
+          flippedCards = [];
+          messageP.textContent = 'No son pareja. Intenta de nuevo.';
+        }, 1000);
+      }
+    }
+  }
+
+  // ========== SOPA DE LETRAS ==========
+  const sopaGrid = document.getElementById('sopa-grid');
+  const sopaWordsDiv = document.getElementById('sopa-words');
+
+  // Letras para la sopa (10x10)
+  const sopaLetters = [
+    ['s','a','l','v','a','c','i','o','n','a'],
+    ['r','a','m','o','n','i','a','e','s','t'],
+    ['i','e','r','e','a','n','c','i','a','p'],
+    ['a','m','o','r','t','i','e','m','p','o'],
+    ['n','l','a','b','o','r','d','i','a','s'],
+    ['o','r','o','r','a','c','i','o','n','s'],
+    ['v','i','d','a','b','i','b','l','i','a','s'],
+    ['e','c','r','e','f','u','g','i','o','s'],
+    ['l','a','p','a','z','s','a','n','t','o'],
+    ['f','e','d','e','r','a','d','o','r','e']
+  ];
+
+  const sopaPalabras = [
+    "salvacion", "arrepentimiento", "oracion", "vida", "biblia", "refugio", "paz"
+  ];
+
+  let sopaFoundWords = [];
+
+  function startSopa() {
+    sopaFoundWords = [];
+    messageP.textContent = '';
+    sopaGrid.innerHTML = '';
+    sopaWordsDiv.innerHTML = '<strong>Palabras a encontrar:</strong> ' + sopaPalabras.join(', ');
+
+    // Crear cuadrícula
+    sopaLetters.forEach(row => {
+      row.forEach(letter => {
+        const cell = document.createElement('div');
+        cell.textContent = letter;
+        sopaGrid.appendChild(cell);
+        cell.onclick = () => {
+          if (sopaFoundWords.length >= sopaPalabras.length) return;
+          const word = prompt('Escribe la palabra que encontraste (sin espacios):').toLowerCase().trim();
+          if (!word) return;
+          if (sopaPalabras.includes(word) && !sopaFoundWords.includes(word)) {
+            sopaFoundWords.push(word);
+            messageP.textContent = `¡Encontraste la palabra "${word.toUpperCase()}"! +3 puntos`;
+            updateUserScore(currentUser, 3);
+            if (sopaFoundWords.length === sopaPalabras.length) {
+              messageP.textContent = '¡Felicidades! Encontraste todas las palabras.';
+            }
+          } else if (sopaFoundWords.includes(word)) {
+            messageP.textContent = `La palabra "${word.toUpperCase()}" ya fue encontrada.`;
+          } else {
+            messageP.textContent = `La palabra "${word.toUpperCase()}" no está en la lista.`;
+          }
+        };
+      });
+    });
+
+    document.getElementById('sopa-section').classList.remove('hidden');
+  }
+
+  // ========== ADIVINA EL VERSÍCULO ==========
+  const versiculoData = [
+    {
+      texto: "El Señor es mi pastor; nada me faltará.",
+      opciones: [
+        "Salmo 23:1",
+        "Juan 3:16",
+        "Mateo 5:9",
+        "Éxodo 20:12"
+      ],
+      correcta: "Salmo 23:1",
+      puntaje: 7
+    },
+    {
+      texto: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito.",
+      opciones: [
+        "Juan 3:16",
+        "Romanos 8:28",
+        "Salmo 91:1",
+        "Proverbios 3:5"
+      ],
+      correcta: "Juan 3:16",
+      puntaje: 7
+    }
+  ];
+
+  const versiculoTextoP = document.getElementById('versiculo-texto');
+  const versiculoOpcionesDiv = document.getElementById('versiculo-opciones');
+
+  function startVersiculo() {
+    let index = 0;
+    messageP.textContent = '';
+    versiculoTextoP.textContent = '';
+    versiculoOpcionesDiv.innerHTML = '';
+    document.getElementById('versiculo-section').classList.remove('hidden');
+
+    loadVersiculoQuestion(index);
+
+    function loadVersiculoQuestion(i) {
+      if (i >= versiculoData.length) {
+        messageP.textContent = 'Terminaste el juego.';
+        return;
+      }
+      versiculoTextoP.textContent = versiculoData[i].texto;
+      versiculoOpcionesDiv.innerHTML = '';
+      versiculoData[i].opciones.forEach(op => {
+        const btn = document.createElement('button');
+        btn.textContent = op;
+        btn.onclick = () => {
+          if (op === versiculoData[i].correcta) {
+            messageP.textContent = '¡Correcto! +' + versiculoData[i].puntaje + ' puntos';
+            updateUserScore(currentUser, versiculoData[i].puntaje);
+          } else {
+            messageP.textContent = 'Incorrecto. La respuesta correcta es: ' + versiculoData[i].correcta;
+          }
+          btn.disabled = true;
+          setTimeout(() => {
+            loadVersiculoQuestion(i+1);
+            messageP.textContent = '';
+          }, 2000);
+        };
+        versiculoOpcionesDiv.appendChild(btn);
+      });
+    }
+  }
+
+  // ========== ELIGE EL CAMINO ==========
+  const caminoSection = document.getElementById('camino-section');
+  const caminoButtons = caminoSection.querySelectorAll('button[data-choice]');
+  const caminoMensaje = caminoSection.querySelector('p#mensaje');
+
+  function startCamino() {
+    messageP.textContent = '';
+    caminoSection.classList.remove('hidden');
+  }
+
+  caminoButtons.forEach(btn => {
+    btn.onclick = () => {
+      if (btn.dataset.choice === 'angosto') {
+        messageP.textContent = '¡Correcto! El camino angosto es el camino a la vida. +5 puntos';
+        updateUserScore(currentUser, 5);
+      } else {
+        messageP.textContent = 'El camino ancho lleva a la perdición. Intenta de nuevo.';
+      }
+    };
+  });
+
+  // ========== RANKING ==========
+  const rankingList = document.getElementById('ranking-list');
+
+  function showRanking() {
+    rankingList.innerHTML = '';
+    const ranking = getRanking();
+    ranking.forEach(user => {
+      const tr = document.createElement('tr');
+      const tdName = document.createElement('td');
+      tdName.textContent = user.name;
+      const tdScore = document.createElement('td');
+      tdScore.textContent = user.score;
+      tr.appendChild(tdName);
+      tr.appendChild(tdScore);
+      rankingList.appendChild(tr);
+    });
+    document.getElementById('ranking-section').classList.remove('hidden');
+  }
+
+  // Utilidad: shuffle
+  function shuffleArray(array) {
+    for(let i = array.length - 1; i > 0; i--){
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
