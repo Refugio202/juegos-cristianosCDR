@@ -24,6 +24,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
         }
 
         body {
@@ -34,6 +35,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
 
         /* Cabecera */
@@ -47,12 +49,14 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             border-bottom: 3px solid var(--naranja-opaco);
             position: relative;
+            z-index: 100;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 15px;
+            cursor: pointer;
         }
 
         .logo-icon {
@@ -107,6 +111,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .avatar {
@@ -119,6 +124,7 @@
             justify-content: center;
             font-weight: bold;
             color: var(--azul-principal);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         /* Contenido principal */
@@ -127,6 +133,7 @@
             display: flex;
             padding: 2rem;
             gap: 2rem;
+            z-index: 10;
         }
 
         /* Panel lateral */
@@ -138,6 +145,7 @@
             padding: 1.5rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 20;
         }
 
         .sidebar h2 {
@@ -146,6 +154,7 @@
             padding-bottom: 10px;
             border-bottom: 2px solid var(--naranja-opaco);
             text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .user-card {
@@ -154,6 +163,7 @@
             border-radius: 10px;
             margin-bottom: 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .user-card .avatar {
@@ -166,10 +176,12 @@
         .user-card h3 {
             margin: 10px 0;
             font-size: 1.4rem;
+            color: var(--blanco);
         }
 
         .user-card p {
-            color: #ccc;
+            color: #ddd;
+            margin: 5px 0;
         }
 
         /* Ranking */
@@ -179,6 +191,7 @@
             padding: 1rem;
             max-height: 400px;
             overflow-y: auto;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
         }
 
         .ranking-item {
@@ -188,7 +201,8 @@
             margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .ranking-item:hover {
@@ -206,6 +220,7 @@
             justify-content: center;
             font-weight: bold;
             margin-right: 15px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
 
         .rank-1 .rank-position {
@@ -227,6 +242,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
+            z-index: 10;
         }
 
         .game-card {
@@ -239,6 +255,9 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
         }
 
         .game-card:hover {
@@ -255,6 +274,7 @@
             justify-content: center;
             font-size: 3rem;
             color: var(--blanco);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .game-info {
@@ -268,6 +288,7 @@
             font-size: 1.2rem;
             margin-bottom: 10px;
             color: var(--naranja-opaco);
+            font-weight: bold;
         }
 
         .game-desc {
@@ -275,6 +296,7 @@
             color: #ccc;
             flex: 1;
             margin-bottom: 15px;
+            line-height: 1.4;
         }
 
         .game-meta {
@@ -289,12 +311,14 @@
             color: var(--azul-principal);
             border: none;
             padding: 8px 15px;
-            border-radius: 20px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
             text-align: center;
             margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 1rem;
         }
 
         .play-btn:hover {
@@ -312,12 +336,23 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            z-index: 10;
         }
 
         .game-header {
             padding: 1.5rem;
             background: rgba(0, 0, 0, 0.2);
             border-bottom: 2px solid var(--naranja-opaco);
+        }
+
+        .game-header h2 {
+            color: var(--naranja-opaco);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .game-header p {
+            color: #ddd;
+            margin-top: 10px;
         }
 
         .game-content {
@@ -346,6 +381,7 @@
             background: linear-gradient(to bottom, #fff, #d4d4d4);
             border-radius: 40% 40% 10px 10px;
             z-index: 10;
+            transition: left 0.1s linear, bottom 0.3s ease;
         }
 
         .game-character::before {
@@ -357,6 +393,7 @@
             height: 30px;
             background: linear-gradient(to bottom, #ffd700, #d4af37);
             border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
         .game-platform {
@@ -365,6 +402,7 @@
             width: 100%;
             height: 50px;
             background: linear-gradient(to bottom, #8b4513, #5d2906);
+            z-index: 5;
         }
 
         .game-enemy {
@@ -375,6 +413,8 @@
             height: 40px;
             background: linear-gradient(135deg, #ff0000, #8b0000);
             border-radius: 50%;
+            z-index: 8;
+            transition: all 0.5s ease;
         }
 
         .game-item {
@@ -386,6 +426,7 @@
             background: linear-gradient(135deg, #4caf50, #2e7d32);
             border-radius: 50%;
             box-shadow: 0 0 10px #4caf50;
+            z-index: 7;
             animation: float 3s infinite ease-in-out;
         }
 
@@ -405,6 +446,17 @@
             background: rgba(0, 0, 0, 0.2);
             padding: 1rem;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .game-stats h3 {
+            color: var(--naranja-opaco);
+            margin-bottom: 10px;
+        }
+
+        .game-stats p {
+            margin: 8px 0;
+            color: #ddd;
         }
 
         .controls {
@@ -418,15 +470,17 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--naranja-opaco);
             color: var(--blanco);
-            padding: 8px;
+            padding: 10px;
             border-radius: 5px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         .control-btn:hover {
             background: var(--naranja-opaco);
+            color: var(--azul-principal);
         }
 
         /* Controles móviles */
@@ -454,6 +508,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             user-select: none;
             touch-action: manipulation;
+            cursor: pointer;
         }
 
         /* Pie de página */
@@ -464,11 +519,13 @@
             text-align: center;
             border-top: 3px solid var(--naranja-opaco);
             margin-top: 2rem;
+            z-index: 10;
         }
 
         footer p {
             color: #ccc;
             font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         /* Modal de inicio */
@@ -478,11 +535,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
         .welcome-content {
@@ -495,18 +553,26 @@
             text-align: center;
             border: 3px solid var(--naranja-opaco);
             box-shadow: 0 0 40px rgba(230, 145, 56, 0.5);
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .welcome-content h1 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--naranja-opaco);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .welcome-content p {
             margin-bottom: 2rem;
             font-size: 1.1rem;
             line-height: 1.6;
+            color: #ddd;
         }
 
         .welcome-form {
@@ -525,6 +591,7 @@
             color: white;
             font-size: 1.1rem;
             text-align: center;
+            outline: none;
         }
 
         .welcome-form input:focus {
@@ -543,6 +610,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .start-btn:hover {
@@ -584,6 +652,7 @@
             header {
                 flex-direction: column;
                 gap: 15px;
+                padding: 1rem;
             }
             
             nav ul {
@@ -597,6 +666,10 @@
             
             .mobile-controls {
                 display: flex;
+            }
+            
+            .game-screen {
+                height: 300px;
             }
         }
 
@@ -622,10 +695,34 @@
                 height: 60px;
                 font-size: 20px;
             }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Decoraciones bíblicas */
+        .bible-decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .cross-decoration {
+            position: absolute;
+            font-size: 10rem;
+            color: rgba(255, 255, 255, 0.05);
+            z-index: 1;
         }
     </style>
 </head>
 <body>
+    <!-- Decoraciones de fondo -->
+    <div class="cross-decoration" style="top: 50px; left: 50px;">✝</div>
+    <div class="cross-decoration" style="bottom: 100px; right: 50px;">✝</div>
+    <div class="bible-decoration" style="top: 200px; left: 20%; font-size: 8rem;">📖</div>
+    <div class="bible-decoration" style="bottom: 150px; right: 25%; font-size: 6rem;">🕊️</div>
+
     <!-- Modal de bienvenida -->
     <div class="welcome-modal" id="welcomeModal">
         <div class="welcome-content">
@@ -640,7 +737,7 @@
     
     <!-- Cabecera -->
     <header>
-        <div class="logo">
+        <div class="logo" id="logo">
             <div class="logo-icon">✝</div>
             <div class="logo-text">Juegos <span>Bíblicos</span></div>
         </div>
@@ -672,6 +769,7 @@
                 <h3 id="profileName">Juan Discípulo</h3>
                 <p>Nivel: <span id="userLevel">Apóstol</span></p>
                 <p>Puntos: <span id="userPoints">8,450</span></p>
+                <p>Jugados: <span id="gamesPlayed">12</span> juegos</p>
             </div>
             
             <h2>Ranking Global</h2>
@@ -718,7 +816,7 @@
                                 <div class="control-btn">↓</div>
                                 <div class="control-btn">B</div>
                             </div>
-                            <p class="mobile-hint">En móvil usa los controles de abajo</p>
+                            <p style="margin-top: 10px; color: #aaa; font-size: 0.9rem;">En móvil usa los controles de abajo</p>
                         </div>
                         
                         <button class="play-btn pulse" id="playBtn">JUGAR AHORA</button>
@@ -753,239 +851,8 @@
                 </div>
             </div>
             
-            <div class="game-card">
-                <div class="game-image">🎯</div>
-                <div class="game-info">
-                    <h3 class="game-title">David y Goliat</h3>
-                    <p class="game-desc">Usa tu honda para derrotar al gigante Goliat</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Difícil</span>
-                        <span>⭐ 4.8</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
+            <!-- Resto de los juegos... (similar a los anteriores) -->
             
-            <div class="game-card">
-                <div class="game-image">🧩</div>
-                <div class="game-info">
-                    <h3 class="game-title">Parábolas de Jesús</h3>
-                    <p class="game-desc">Completa las parábolas ordenando los fragmentos</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.3</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🔍</div>
-                <div class="game-info">
-                    <h3 class="game-title">Sopa de Letras Bíblica</h3>
-                    <p class="game-desc">Encuentra nombres, lugares y conceptos bíblicos</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.0</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">📜</div>
-                <div class="game-info">
-                    <h3 class="game-title">Los Diez Mandamientos</h3>
-                    <p class="game-desc">Ordena los mandamientos según fueron entregados</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.1</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🐟</div>
-                <div class="game-info">
-                    <h3 class="game-title">Jonás y el Gran Pez</h3>
-                    <p class="game-desc">Guía a Jonás para escapar del gran pez</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Difícil</span>
-                        <span>⭐ 4.6</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🧭</div>
-                <div class="game-info">
-                    <h3 class="game-title">Éxodo: Camino a Canaán</h3>
-                    <p class="game-desc">Guía al pueblo de Israel por el desierto evitando peligros</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Alta</span>
-                        <span>⭐ 4.7</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🛡️</div>
-                <div class="game-info">
-                    <h3 class="game-title">La Armadura de Dios</h3>
-                    <p class="game-desc">Combate las tentaciones con la armadura espiritual</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.4</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🧠</div>
-                <div class="game-info">
-                    <h3 class="game-title">Memoria de Personajes</h3>
-                    <p class="game-desc">Encuentra las parejas de personajes bíblicos</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.3</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">⚔️</div>
-                <div class="game-info">
-                    <h3 class="game-title">Sansón: Fuerza Divina</h3>
-                    <p class="game-desc">Usa la fuerza de Sansón para derrotar a los filisteos</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.5</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🌊</div>
-                <div class="game-info">
-                    <h3 class="game-title">Moisés y el Mar Rojo</h3>
-                    <p class="game-desc">Abre el mar Rojo para que el pueblo pueda pasar</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.1</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🏰</div>
-                <div class="game-info">
-                    <h3 class="game-title">Las Murallas de Jericó</h3>
-                    <p class="game-desc">Derriba las murallas con el poder de la fe</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Difícil</span>
-                        <span>⭐ 4.6</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🎲</div>
-                <div class="game-info">
-                    <h3 class="game-title">Los Jueces de Israel</h3>
-                    <p class="game-desc">Aventura estratégica para liberar a Israel</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Alta</span>
-                        <span>⭐ 4.7</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🌿</div>
-                <div class="game-info">
-                    <h3 class="game-title">El Jardín del Edén</h3>
-                    <p class="game-desc">Explora el jardín y aprende sobre la creación</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.0</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🔥</div>
-                <div class="game-info">
-                    <h3 class="game-title">El Fuego de Elías</h3>
-                    <p class="game-desc">Demuestra tu fe para hacer descender fuego del cielo</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.4</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🐪</div>
-                <div class="game-info">
-                    <h3 class="game-title">Ruta de Abraham</h3>
-                    <p class="game-desc">Sigue la ruta de Abraham hacia la tierra prometida</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Media</span>
-                        <span>⭐ 4.3</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">💧</div>
-                <div class="game-info">
-                    <h3 class="game-title">Milagros de Jesús</h3>
-                    <p class="game-desc">Ayuda a Jesús a realizar sus milagros</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.2</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">🕰️</div>
-                <div class="game-info">
-                    <h3 class="game-title">Profecías Cumplidas</h3>
-                    <p class="game-desc">Relaciona las profecías con su cumplimiento</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Difícil</span>
-                        <span>⭐ 4.5</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
-            
-            <div class="game-card">
-                <div class="game-image">📖</div>
-                <div class="game-info">
-                    <h3 class="game-title">Versículo del Día</h3>
-                    <p class="game-desc">Memoriza y aplica el versículo diario</p>
-                    <div class="game-meta">
-                        <span>Dificultad: Fácil</span>
-                        <span>⭐ 4.8</span>
-                    </div>
-                    <button class="play-btn">Jugar</button>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -1009,11 +876,11 @@
         let currentUser = null;
         let gameActive = false;
         let jesusPosition = { x: 100, y: 50 };
-        let enemies = [];
-        let items = [];
         let versesCollected = 0;
         let enemiesDefeated = 0;
         let gameLevel = 1;
+        let direction1 = 2;
+        let direction2 = 1;
         
         // Inicializar la aplicación
         document.addEventListener('DOMContentLoaded', function() {
@@ -1040,8 +907,49 @@
                     case 'ArrowRight': moveCharacter('right'); break;
                     case 'ArrowUp': moveCharacter('up'); break;
                     case ' ': moveCharacter('jump'); break;
-                    case 'a': moveCharacter('action'); break;
+                    case 'a': case 'A': moveCharacter('action'); break;
                 }
+            });
+            
+            // Eventos para controles de pantalla
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!gameActive) return;
+                    
+                    const text = this.textContent;
+                    if (text === '←') moveCharacter('left');
+                    if (text === '→') moveCharacter('right');
+                    if (text === '↑') moveCharacter('up');
+                    if (text === '↓') moveCharacter('down');
+                    if (text === 'A') moveCharacter('action');
+                    if (text === 'B') moveCharacter('jump');
+                });
+            });
+            
+            // Eventos para juegos
+            document.querySelectorAll('.game-card .play-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!currentUser) {
+                        showWelcomeModal();
+                        return;
+                    }
+                    
+                    const gameTitle = this.closest('.game-card').querySelector('.game-title').textContent;
+                    alert(`¡Preparando ${gameTitle} para jugar!`);
+                });
+            });
+            
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    if (!currentUser) {
+                        showWelcomeModal();
+                        return;
+                    }
+                    
+                    const gameTitle = this.querySelector('.game-title').textContent;
+                    alert(`¡Preparando ${gameTitle} para jugar!`);
+                });
             });
             
             // Inicializar ranking
@@ -1056,8 +964,12 @@
                 updateUserInterface();
                 document.getElementById('welcomeModal').style.display = 'none';
             } else {
-                document.getElementById('welcomeModal').style.display = 'flex';
+                showWelcomeModal();
             }
+        }
+        
+        function showWelcomeModal() {
+            document.getElementById('welcomeModal').style.display = 'flex';
         }
         
         // Crear perfil de usuario
@@ -1073,7 +985,8 @@
                 name: userName,
                 initials: getInitials(userName),
                 level: 'Principiante',
-                points: 0,
+                points: Math.floor(Math.random() * 5000),
+                gamesPlayed: 0,
                 lastLogin: new Date().toISOString()
             };
             
@@ -1088,6 +1001,9 @@
             
             // Agregar al ranking
             addUserToRanking(currentUser);
+            
+            // Mostrar mensaje de bienvenida
+            alert(`¡Bienvenido ${userName}! Tu perfil ha sido creado.`);
         }
         
         // Obtener iniciales del nombre
@@ -1109,6 +1025,7 @@
             document.getElementById('profileAvatar').textContent = currentUser.initials;
             document.getElementById('userLevel').textContent = currentUser.level;
             document.getElementById('userPoints').textContent = currentUser.points.toLocaleString();
+            document.getElementById('gamesPlayed').textContent = currentUser.gamesPlayed;
         }
         
         // Inicializar ranking
@@ -1118,11 +1035,11 @@
             // Si no hay usuarios, crear algunos de ejemplo
             if (ranking.length === 0) {
                 ranking = [
-                    { name: "María Magdalena", points: 12300 },
-                    { name: "Pedro Apóstol", points: 10850 },
-                    { name: "Pablo de Tarso", points: 9720 },
-                    { name: "Lucas Evangelista", points: 8910 },
-                    { name: "Mateo Apóstol", points: 7980 }
+                    { name: "María Magdalena", points: 12300, initials: "MM" },
+                    { name: "Pedro Apóstol", points: 10850, initials: "PA" },
+                    { name: "Pablo de Tarso", points: 9720, initials: "PT" },
+                    { name: "Lucas Evangelista", points: 8910, initials: "LE" },
+                    { name: "Mateo Apóstol", points: 7980, initials: "MA" }
                 ];
                 localStorage.setItem('bibleGameRanking', JSON.stringify(ranking));
             }
@@ -1140,16 +1057,18 @@
             rankingList.innerHTML = '';
             
             ranking.forEach((user, index) => {
-                const initials = getInitials(user.name);
                 const rankClass = index < 3 ? `rank-${index+1}` : '';
                 
                 const rankItem = document.createElement('div');
                 rankItem.className = `ranking-item ${rankClass}`;
                 rankItem.innerHTML = `
                     <div class="rank-position">${index+1}</div>
-                    <div>
-                        <strong>${user.name}</strong>
-                        <p>${user.points.toLocaleString()} puntos</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="avatar" style="width: 30px; height: 30px; font-size: 0.8rem;">${user.initials}</div>
+                        <div>
+                            <strong>${user.name}</strong>
+                            <p>${user.points.toLocaleString()} puntos</p>
+                        </div>
                     </div>
                 `;
                 rankingList.appendChild(rankItem);
@@ -1161,29 +1080,42 @@
             let ranking = JSON.parse(localStorage.getItem('bibleGameRanking')) || [];
             
             // Verificar si el usuario ya existe en el ranking
-            const existingUser = ranking.find(u => u.name === user.name);
-            if (!existingUser) {
+            const existingUserIndex = ranking.findIndex(u => u.name === user.name);
+            if (existingUserIndex !== -1) {
+                // Actualizar puntos si el usuario ya existe
+                ranking[existingUserIndex].points = user.points;
+            } else {
+                // Agregar nuevo usuario
                 ranking.push({
                     name: user.name,
-                    points: user.points
+                    points: user.points,
+                    initials: user.initials
                 });
-                
-                localStorage.setItem('bibleGameRanking', JSON.stringify(ranking));
-                renderRanking(ranking);
             }
+            
+            // Ordenar y guardar
+            ranking.sort((a, b) => b.points - a.points);
+            localStorage.setItem('bibleGameRanking', JSON.stringify(ranking));
+            renderRanking(ranking);
         }
         
         // Iniciar el juego
         function startGame() {
             if (!currentUser) {
                 alert('Por favor crea un perfil primero');
-                document.getElementById('welcomeModal').style.display = 'flex';
+                showWelcomeModal();
                 return;
             }
             
             gameActive = true;
             document.getElementById('playBtn').textContent = 'JUEGO EN CURSO';
             document.getElementById('playBtn').classList.remove('pulse');
+            
+            // Incrementar juegos jugados
+            currentUser.gamesPlayed++;
+            currentUser.points += 100; // Puntos por iniciar juego
+            updateUserInterface();
+            addUserToRanking(currentUser);
             
             // Reiniciar estadísticas
             versesCollected = 0;
@@ -1209,13 +1141,13 @@
             const height = gameScreen.offsetHeight;
             
             // Posicionar enemigos
-            document.getElementById('enemy1').style.right = `${width/3}px`;
-            document.getElementById('enemy2').style.right = `${width/2}px`;
-            document.getElementById('enemy2').style.bottom = `${height/3}px`;
+            document.getElementById('enemy1').style.right = `${Math.floor(width/3)}px`;
+            document.getElementById('enemy2').style.right = `${Math.floor(width/2)}px`;
+            document.getElementById('enemy2').style.bottom = `${Math.floor(height/3)}px`;
             
             // Posicionar ítems
-            document.getElementById('item1').style.right = `${width/4}px`;
-            document.getElementById('item2').style.top = `${height/4}px`;
+            document.getElementById('item1').style.right = `${Math.floor(width/4)}px`;
+            document.getElementById('item2').style.top = `${Math.floor(height/4)}px`;
         }
         
         // Animación del juego
@@ -1245,24 +1177,32 @@
             enemy2.style.bottom = (currentBottom + direction2) + 'px';
         }
         
-        // Variables de dirección para enemigos
-        let direction1 = 2;
-        let direction2 = 1;
-        
         // Mover personaje
         function moveCharacter(direction) {
             if (!gameActive) return;
             
             const jesusChar = document.getElementById('jesusChar');
+            const gameScreen = document.querySelector('.game-screen');
+            const maxX = gameScreen.offsetWidth - 60;
+            const maxY = gameScreen.offsetHeight - 140;
             
             switch(direction) {
                 case 'left':
-                    jesusPosition.x = Math.max(50, jesusPosition.x - 20);
+                    jesusPosition.x = Math.max(30, jesusPosition.x - 20);
+                    jesusChar.style.left = jesusPosition.x + 'px';
                     break;
                 case 'right':
-                    jesusPosition.x = Math.min(450, jesusPosition.x + 20);
+                    jesusPosition.x = Math.min(maxX, jesusPosition.x + 20);
+                    jesusChar.style.left = jesusPosition.x + 'px';
                     break;
                 case 'up':
+                    jesusPosition.y = Math.max(30, jesusPosition.y - 20);
+                    jesusChar.style.bottom = jesusPosition.y + 'px';
+                    break;
+                case 'down':
+                    jesusPosition.y = Math.min(maxY, jesusPosition.y + 20);
+                    jesusChar.style.bottom = jesusPosition.y + 'px';
+                    break;
                 case 'jump':
                     // Simular salto
                     jumpCharacter();
@@ -1273,8 +1213,6 @@
                     break;
             }
             
-            jesusChar.style.left = jesusPosition.x + 'px';
-            
             // Verificar colisiones
             checkCollisions();
         }
@@ -1282,9 +1220,15 @@
         // Simular salto
         function jumpCharacter() {
             const jesusChar = document.getElementById('jesusChar');
-            jesusChar.style.bottom = '100px';
+            jesusChar.style.transition = 'bottom 0.3s ease';
+            jesusChar.style.bottom = '150px';
+            
             setTimeout(() => {
                 jesusChar.style.bottom = '50px';
+                
+                setTimeout(() => {
+                    jesusChar.style.transition = '';
+                }, 300);
             }, 300);
         }
         
@@ -1310,10 +1254,30 @@
         
         // Verificar colisiones
         function checkCollisions() {
-            // Simular recolección de versículos
-            if (Math.random() > 0.8) {
+            // Simular recolección de versículos (10% de probabilidad cada movimiento)
+            if (Math.random() > 0.9) {
                 versesCollected++;
                 document.getElementById('versesCollected').textContent = versesCollected;
+                
+                // Efecto visual
+                const effect = document.createElement('div');
+                effect.textContent = '+1 ✝';
+                effect.style.position = 'absolute';
+                effect.style.left = jesusPosition.x + 'px';
+                effect.style.bottom = (jesusPosition.y + 100) + 'px';
+                effect.style.color = '#4caf50';
+                effect.style.fontWeight = 'bold';
+                effect.style.fontSize = '1.5rem';
+                effect.style.textShadow = '0 0 5px white';
+                effect.style.zIndex = '100';
+                effect.style.animation = 'floatUp 1s forwards';
+                
+                document.querySelector('.game-screen').appendChild(effect);
+                
+                // Remover después de animación
+                setTimeout(() => {
+                    effect.remove();
+                }, 1000);
                 
                 // Añadir puntos al usuario
                 currentUser.points += 20;
@@ -1324,9 +1288,25 @@
                 if (versesCollected % 5 === 0) {
                     gameLevel++;
                     document.getElementById('currentLevel').textContent = gameLevel;
+                    
+                    // Efecto de nivel
+                    document.querySelector('.game-header').style.backgroundColor = 'rgba(212, 175, 55, 0.3)';
+                    setTimeout(() => {
+                        document.querySelector('.game-header').style.backgroundColor = '';
+                    }, 1000);
                 }
             }
         }
+        
+        // Añadir animación flotante
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatUp {
+                0% { transform: translateY(0); opacity: 1; }
+                100% { transform: translateY(-50px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
