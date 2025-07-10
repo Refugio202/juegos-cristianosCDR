@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juegos Bíblicos - Iglesia Ciudad De Refugio</title>
+    <title>Juegos Bíblicos - Iglesia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Variables de colores y estilos */
         :root {
@@ -428,6 +429,33 @@
             background: var(--naranja-opaco);
         }
 
+        /* Controles móviles */
+        .mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            justify-content: space-around;
+            z-index: 100;
+        }
+
+        .mobile-btn {
+            width: 70px;
+            height: 70px;
+            background: rgba(230, 145, 56, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            touch-action: manipulation;
+        }
+
         /* Pie de página */
         footer {
             background-color: var(--azul-secundario);
@@ -443,91 +471,83 @@
             font-size: 0.9rem;
         }
 
-        /* Login Modal */
-        .login-modal {
-            display: none;
+        /* Modal de inicio */
+        .welcome-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1000;
         }
 
-        .login-form {
+        .welcome-content {
             background: var(--azul-secundario);
             background-image: var(--textura-panel);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--naranja-opaco);
-        }
-
-        .login-form h2 {
-            color: var(--naranja-opaco);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
             text-align: center;
+            border: 3px solid var(--naranja-opaco);
+            box-shadow: 0 0 40px rgba(230, 145, 56, 0.5);
+        }
+
+        .welcome-content h1 {
+            font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            color: var(--naranja-opaco);
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
+        .welcome-content p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ccc;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: var(--blanco);
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--naranja-opaco);
-        }
-
-        .form-actions {
+        .welcome-form {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 20px;
             align-items: center;
-            margin-top: 1.5rem;
         }
 
-        .btn {
-            padding: 10px 25px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
+        .welcome-form input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--naranja-opaco);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
         }
 
-        .btn-primary {
+        .welcome-form input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(230, 145, 56, 0.5);
+        }
+
+        .start-btn {
             background: linear-gradient(135deg, var(--naranja-opaco), var(--dorado));
             color: var(--azul-principal);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--blanco);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(230, 145, 56, 0.7);
         }
 
         /* Animaciones */
@@ -560,7 +580,7 @@
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 gap: 15px;
@@ -572,12 +592,52 @@
             }
             
             .games-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .mobile-controls {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-container {
                 grid-template-columns: 1fr;
+            }
+            
+            .game-image {
+                height: 120px;
+            }
+            
+            .welcome-content {
+                padding: 1.5rem;
+            }
+            
+            .welcome-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Modal de bienvenida -->
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="welcome-content">
+            <h1>¡Bienvenido a Juegos Bíblicos!</h1>
+            <p>Ingresa tu nombre para crear tu perfil y comienza a disfrutar de más de 20 juegos basados en las historias de la Biblia.</p>
+            <div class="welcome-form">
+                <input type="text" id="userName" placeholder="Ingresa tu nombre completo" maxlength="30">
+                <button class="start-btn" id="startBtn">Comenzar la Aventura</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Cabecera -->
     <header>
         <div class="logo">
@@ -595,9 +655,9 @@
             </ul>
         </nav>
         
-        <div class="user-info">
-            <div class="avatar">JD</div>
-            <div>Juan Discípulo</div>
+        <div class="user-info" id="userInfo">
+            <div class="avatar" id="userAvatar">JD</div>
+            <div id="userDisplay">Juan Discípulo</div>
         </div>
     </header>
     
@@ -608,62 +668,16 @@
             <h2>Tu Perfil</h2>
             
             <div class="user-card">
-                <div class="avatar">JD</div>
-                <h3>Juan Discípulo</h3>
-                <p>Nivel: Apóstol</p>
-                <p>Puntos: 8,450</p>
+                <div class="avatar" id="profileAvatar">JD</div>
+                <h3 id="profileName">Juan Discípulo</h3>
+                <p>Nivel: <span id="userLevel">Apóstol</span></p>
+                <p>Puntos: <span id="userPoints">8,450</span></p>
             </div>
             
             <h2>Ranking Global</h2>
             
-            <div class="ranking">
-                <div class="ranking-item rank-1">
-                    <div class="rank-position">1</div>
-                    <div>
-                        <strong>María Magdalena</strong>
-                        <p>12,300 puntos</p>
-                    </div>
-                </div>
-                
-                <div class="ranking-item rank-2">
-                    <div class="rank-position">2</div>
-                    <div>
-                        <strong>Pedro Apóstol</strong>
-                        <p>10,850 puntos</p>
-                    </div>
-                </div>
-                
-                <div class="ranking-item rank-3">
-                    <div class="rank-position">3</div>
-                    <div>
-                        <strong>Pablo de Tarso</strong>
-                        <p>9,720 puntos</p>
-                    </div>
-                </div>
-                
-                <div class="ranking-item">
-                    <div class="rank-position">4</div>
-                    <div>
-                        <strong>Lucas Evangelista</strong>
-                        <p>8,910 puntos</p>
-                    </div>
-                </div>
-                
-                <div class="ranking-item">
-                    <div class="rank-position">5</div>
-                    <div>
-                        <strong>Juan Discípulo</strong>
-                        <p>8,450 puntos</p>
-                    </div>
-                </div>
-                
-                <div class="ranking-item">
-                    <div class="rank-position">6</div>
-                    <div>
-                        <strong>Mateo Apóstol</strong>
-                        <p>7,980 puntos</p>
-                    </div>
-                </div>
+            <div class="ranking" id="rankingList">
+                <!-- El ranking se cargará dinámicamente -->
             </div>
         </div>
         
@@ -678,18 +692,20 @@
                 
                 <div class="game-content">
                     <div class="game-screen">
-                        <div class="game-character"></div>
+                        <div class="game-character" id="jesusChar"></div>
                         <div class="game-platform"></div>
-                        <div class="game-enemy"></div>
-                        <div class="game-item"></div>
+                        <div class="game-enemy" id="enemy1"></div>
+                        <div class="game-enemy" id="enemy2" style="right: 350px; bottom: 100px;"></div>
+                        <div class="game-item" id="item1"></div>
+                        <div class="game-item" id="item2" style="top: 200px; right: 150px;"></div>
                     </div>
                     
                     <div class="game-details">
                         <div class="game-stats">
                             <h3>Tu Progreso</h3>
-                            <p>Nivel actual: 3</p>
-                            <p>Versículos recolectados: 15/20</p>
-                            <p>Enemigos derrotados: 8</p>
+                            <p>Nivel actual: <span id="currentLevel">3</span></p>
+                            <p>Versículos recolectados: <span id="versesCollected">15</span>/20</p>
+                            <p>Enemigos derrotados: <span id="enemiesDefeated">8</span></p>
                         </div>
                         
                         <div class="game-stats">
@@ -702,9 +718,10 @@
                                 <div class="control-btn">↓</div>
                                 <div class="control-btn">B</div>
                             </div>
+                            <p class="mobile-hint">En móvil usa los controles de abajo</p>
                         </div>
                         
-                        <button class="play-btn pulse">JUGAR AHORA</button>
+                        <button class="play-btn pulse" id="playBtn">JUGAR AHORA</button>
                     </div>
                 </div>
             </div>
@@ -972,74 +989,344 @@
         </div>
     </div>
     
+    <!-- Controles móviles -->
+    <div class="mobile-controls">
+        <div class="mobile-btn" id="leftBtn"><i class="fas fa-arrow-left"></i></div>
+        <div class="mobile-btn" id="upBtn"><i class="fas fa-arrow-up"></i></div>
+        <div class="mobile-btn" id="rightBtn"><i class="fas fa-arrow-right"></i></div>
+        <div class="mobile-btn" id="jumpBtn"><i class="fas fa-running"></i></div>
+        <div class="mobile-btn" id="actionBtn"><i class="fas fa-bolt"></i></div>
+    </div>
+    
     <!-- Pie de página -->
     <footer>
-        <p>© 2025 Portal de Juegos Bíblicos - Iglesia Ciudad de Refugio | Todos los derechos reservados</p>
+        <p>© 2023 Portal de Juegos Bíblicos - Iglesia Comunidad de Fe | Todos los derechos reservados</p>
         <p>Desarrollado con amor para fortalecer la fe y el conocimiento bíblico</p>
     </footer>
     
-    <!-- Modal de Login -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-form">
-            <h2>Iniciar Sesión</h2>
-            <div class="form-group">
-                <label for="username">Nombre de Usuario</label>
-                <input type="text" id="username" placeholder="Ingresa tu usuario">
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Ingresa tu contraseña">
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-secondary">Registrarse</button>
-                <button class="btn btn-primary">Ingresar</button>
-            </div>
-        </div>
-    </div>
-    
     <script>
-        // Simulación de datos en tiempo real
-        function updateRankings() {
-            const rankings = document.querySelectorAll('.ranking-item:not(.rank-1):not(.rank-2):not(.rank-3)');
-            rankings.forEach((item, index) => {
-                const points = item.querySelector('p');
-                const currentPoints = parseInt(points.textContent.replace(/\D/g, ''));
-                const newPoints = currentPoints + Math.floor(Math.random() * 20);
-                points.textContent = newPoints.toLocaleString() + ' puntos';
-            });
-            
-            // Actualizar cada 10 segundos
-            setTimeout(updateRankings, 10000);
-        }
+        // Variables globales
+        let currentUser = null;
+        let gameActive = false;
+        let jesusPosition = { x: 100, y: 50 };
+        let enemies = [];
+        let items = [];
+        let versesCollected = 0;
+        let enemiesDefeated = 0;
+        let gameLevel = 1;
         
-        // Animaciones para las tarjetas de juego
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px)';
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si ya hay un usuario registrado
+            checkUserProfile();
+            
+            // Configurar eventos
+            document.getElementById('startBtn').addEventListener('click', createUserProfile);
+            document.getElementById('playBtn').addEventListener('click', startGame);
+            
+            // Controles móviles
+            document.getElementById('leftBtn').addEventListener('touchstart', () => moveCharacter('left'));
+            document.getElementById('rightBtn').addEventListener('touchstart', () => moveCharacter('right'));
+            document.getElementById('upBtn').addEventListener('touchstart', () => moveCharacter('up'));
+            document.getElementById('jumpBtn').addEventListener('touchstart', () => moveCharacter('jump'));
+            document.getElementById('actionBtn').addEventListener('touchstart', () => moveCharacter('action'));
+            
+            // Controles de teclado
+            document.addEventListener('keydown', function(e) {
+                if (!gameActive) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft': moveCharacter('left'); break;
+                    case 'ArrowRight': moveCharacter('right'); break;
+                    case 'ArrowUp': moveCharacter('up'); break;
+                    case ' ': moveCharacter('jump'); break;
+                    case 'a': moveCharacter('action'); break;
+                }
             });
             
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
+            // Inicializar ranking
+            initializeRanking();
         });
         
-        // Simulación del juego principal
-        const gameCharacter = document.querySelector('.game-character');
-        let position = 100;
-        
-        function moveCharacter() {
-            position += 2;
-            if (position > 700) position = 100;
-            gameCharacter.style.left = position + 'px';
-            
-            requestAnimationFrame(moveCharacter);
+        // Verificar perfil de usuario
+        function checkUserProfile() {
+            const savedUser = localStorage.getItem('bibleGameUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserInterface();
+                document.getElementById('welcomeModal').style.display = 'none';
+            } else {
+                document.getElementById('welcomeModal').style.display = 'flex';
+            }
         }
         
-        // Iniciar animaciones
-        document.addEventListener('DOMContentLoaded', () => {
-            updateRankings();
-            moveCharacter();
-        });
+        // Crear perfil de usuario
+        function createUserProfile() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) {
+                alert('Por favor ingresa tu nombre');
+                return;
+            }
+            
+            // Crear nuevo usuario
+            currentUser = {
+                name: userName,
+                initials: getInitials(userName),
+                level: 'Principiante',
+                points: 0,
+                lastLogin: new Date().toISOString()
+            };
+            
+            // Guardar en localStorage
+            localStorage.setItem('bibleGameUser', JSON.stringify(currentUser));
+            
+            // Actualizar UI
+            updateUserInterface();
+            
+            // Ocultar modal de bienvenida
+            document.getElementById('welcomeModal').style.display = 'none';
+            
+            // Agregar al ranking
+            addUserToRanking(currentUser);
+        }
+        
+        // Obtener iniciales del nombre
+        function getInitials(name) {
+            const parts = name.split(' ');
+            let initials = '';
+            if (parts.length > 0) initials += parts[0][0];
+            if (parts.length > 1) initials += parts[parts.length - 1][0];
+            return initials || 'US';
+        }
+        
+        // Actualizar la interfaz con datos del usuario
+        function updateUserInterface() {
+            if (!currentUser) return;
+            
+            document.getElementById('userDisplay').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.initials;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.initials;
+            document.getElementById('userLevel').textContent = currentUser.level;
+            document.getElementById('userPoints').textContent = currentUser.points.toLocaleString();
+        }
+        
+        // Inicializar ranking
+        function initializeRanking() {
+            let ranking = JSON.parse(localStorage.getItem('bibleGameRanking')) || [];
+            
+            // Si no hay usuarios, crear algunos de ejemplo
+            if (ranking.length === 0) {
+                ranking = [
+                    { name: "María Magdalena", points: 12300 },
+                    { name: "Pedro Apóstol", points: 10850 },
+                    { name: "Pablo de Tarso", points: 9720 },
+                    { name: "Lucas Evangelista", points: 8910 },
+                    { name: "Mateo Apóstol", points: 7980 }
+                ];
+                localStorage.setItem('bibleGameRanking', JSON.stringify(ranking));
+            }
+            
+            // Ordenar ranking
+            ranking.sort((a, b) => b.points - a.points);
+            
+            // Mostrar ranking
+            renderRanking(ranking);
+        }
+        
+        // Renderizar ranking
+        function renderRanking(ranking) {
+            const rankingList = document.getElementById('rankingList');
+            rankingList.innerHTML = '';
+            
+            ranking.forEach((user, index) => {
+                const initials = getInitials(user.name);
+                const rankClass = index < 3 ? `rank-${index+1}` : '';
+                
+                const rankItem = document.createElement('div');
+                rankItem.className = `ranking-item ${rankClass}`;
+                rankItem.innerHTML = `
+                    <div class="rank-position">${index+1}</div>
+                    <div>
+                        <strong>${user.name}</strong>
+                        <p>${user.points.toLocaleString()} puntos</p>
+                    </div>
+                `;
+                rankingList.appendChild(rankItem);
+            });
+        }
+        
+        // Agregar usuario al ranking
+        function addUserToRanking(user) {
+            let ranking = JSON.parse(localStorage.getItem('bibleGameRanking')) || [];
+            
+            // Verificar si el usuario ya existe en el ranking
+            const existingUser = ranking.find(u => u.name === user.name);
+            if (!existingUser) {
+                ranking.push({
+                    name: user.name,
+                    points: user.points
+                });
+                
+                localStorage.setItem('bibleGameRanking', JSON.stringify(ranking));
+                renderRanking(ranking);
+            }
+        }
+        
+        // Iniciar el juego
+        function startGame() {
+            if (!currentUser) {
+                alert('Por favor crea un perfil primero');
+                document.getElementById('welcomeModal').style.display = 'flex';
+                return;
+            }
+            
+            gameActive = true;
+            document.getElementById('playBtn').textContent = 'JUEGO EN CURSO';
+            document.getElementById('playBtn').classList.remove('pulse');
+            
+            // Reiniciar estadísticas
+            versesCollected = 0;
+            enemiesDefeated = 0;
+            gameLevel = 1;
+            
+            // Actualizar UI
+            document.getElementById('versesCollected').textContent = versesCollected;
+            document.getElementById('enemiesDefeated').textContent = enemiesDefeated;
+            document.getElementById('currentLevel').textContent = gameLevel;
+            
+            // Posicionar elementos del juego
+            positionGameElements();
+            
+            // Iniciar animaciones
+            animateGame();
+        }
+        
+        // Posicionar elementos del juego
+        function positionGameElements() {
+            const gameScreen = document.querySelector('.game-screen');
+            const width = gameScreen.offsetWidth;
+            const height = gameScreen.offsetHeight;
+            
+            // Posicionar enemigos
+            document.getElementById('enemy1').style.right = `${width/3}px`;
+            document.getElementById('enemy2').style.right = `${width/2}px`;
+            document.getElementById('enemy2').style.bottom = `${height/3}px`;
+            
+            // Posicionar ítems
+            document.getElementById('item1').style.right = `${width/4}px`;
+            document.getElementById('item2').style.top = `${height/4}px`;
+        }
+        
+        // Animación del juego
+        function animateGame() {
+            if (!gameActive) return;
+            
+            // Mover enemigos
+            moveEnemies();
+            
+            // Continuar animación
+            requestAnimationFrame(animateGame);
+        }
+        
+        // Mover enemigos
+        function moveEnemies() {
+            const enemy1 = document.getElementById('enemy1');
+            const enemy2 = document.getElementById('enemy2');
+            
+            // Mover enemigo 1 de izquierda a derecha
+            let currentRight = parseInt(enemy1.style.right || 200);
+            if (currentRight < 50 || currentRight > 400) direction1 *= -1;
+            enemy1.style.right = (currentRight + direction1) + 'px';
+            
+            // Mover enemigo 2 arriba y abajo
+            let currentBottom = parseInt(enemy2.style.bottom || 100);
+            if (currentBottom < 50 || currentBottom > 200) direction2 *= -1;
+            enemy2.style.bottom = (currentBottom + direction2) + 'px';
+        }
+        
+        // Variables de dirección para enemigos
+        let direction1 = 2;
+        let direction2 = 1;
+        
+        // Mover personaje
+        function moveCharacter(direction) {
+            if (!gameActive) return;
+            
+            const jesusChar = document.getElementById('jesusChar');
+            
+            switch(direction) {
+                case 'left':
+                    jesusPosition.x = Math.max(50, jesusPosition.x - 20);
+                    break;
+                case 'right':
+                    jesusPosition.x = Math.min(450, jesusPosition.x + 20);
+                    break;
+                case 'up':
+                case 'jump':
+                    // Simular salto
+                    jumpCharacter();
+                    break;
+                case 'action':
+                    // Simular ataque
+                    attackEnemy();
+                    break;
+            }
+            
+            jesusChar.style.left = jesusPosition.x + 'px';
+            
+            // Verificar colisiones
+            checkCollisions();
+        }
+        
+        // Simular salto
+        function jumpCharacter() {
+            const jesusChar = document.getElementById('jesusChar');
+            jesusChar.style.bottom = '100px';
+            setTimeout(() => {
+                jesusChar.style.bottom = '50px';
+            }, 300);
+        }
+        
+        // Simular ataque
+        function attackEnemy() {
+            const jesusChar = document.getElementById('jesusChar');
+            
+            // Animación de ataque
+            jesusChar.style.transform = 'scaleX(1.2)';
+            setTimeout(() => {
+                jesusChar.style.transform = 'scaleX(1)';
+            }, 200);
+            
+            // Verificar si hay enemigos cerca
+            enemiesDefeated++;
+            document.getElementById('enemiesDefeated').textContent = enemiesDefeated;
+            
+            // Añadir puntos al usuario
+            currentUser.points += 50;
+            updateUserInterface();
+            addUserToRanking(currentUser);
+        }
+        
+        // Verificar colisiones
+        function checkCollisions() {
+            // Simular recolección de versículos
+            if (Math.random() > 0.8) {
+                versesCollected++;
+                document.getElementById('versesCollected').textContent = versesCollected;
+                
+                // Añadir puntos al usuario
+                currentUser.points += 20;
+                updateUserInterface();
+                addUserToRanking(currentUser);
+                
+                // Avanzar de nivel
+                if (versesCollected % 5 === 0) {
+                    gameLevel++;
+                    document.getElementById('currentLevel').textContent = gameLevel;
+                }
+            }
+        }
     </script>
 </body>
 </html>
